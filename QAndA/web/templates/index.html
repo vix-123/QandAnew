@@ -1,0 +1,37 @@
+{%extends'base.html'%}
+{%block body_block%}
+    {%for q in questions%}
+    <div class="col md-10 col-lg-8 col-xl-7">
+        <div class="post-preview">
+            {%if q.image%}<div>
+                <img src="{{q.image.url}}" alt="" class="w=100">
+            </div>
+            {%endif%}
+            <a href="post.html">
+                <h2 class="post-title">{{q.title}}</h2>
+                <h5 class="post-subtitle">{{q.description}}</h5>
+            </a>
+            <p class="post-meta">
+                Posted by
+                <a href="#!">{{q.user}}</a>
+                on {{q.created_dt}}
+            </p>
+        </div>
+    </div>
+    <div>
+        <form action="{%url'add-answer' q.id %}" method="post">
+            {%csrf_token%}
+            <input type="text" placeholder="Enter Your Answer" name="answer" class="form-control">
+            <button type="submit" class="btn btn-outline-info mt-2">add</button>
+        </form>
+    </div>
+    <h5 class="post-title">Answer</h5>
+    {% for ans in q.questions_answers%}
+    <div class="border rounded-pill p-3 border-success mt-2">
+        answer={{ans}}
+        user={{ans.user}}
+        date={{ans.created_date}}
+        votecount={{ans.votecount}}<a href="{%url 'add-upvote' ans.id%}" class="btn btn-warning btn-sm"></a>
+    </div>
+    {%endfor%}
+{%endblock%}
